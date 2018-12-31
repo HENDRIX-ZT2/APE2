@@ -7,6 +7,7 @@ import sys
 import re
 import time
 import requests
+import webbrowser
 from urllib import parse
 from bs4 import BeautifulSoup
 
@@ -991,14 +992,10 @@ class Application:
 		messagebox.showinfo("APE2","This program allows you to copy any entity (object, animal, etc.) you can find in your ZT2 installation. You can also change properties and create zoopedias for your projects.\nProgrammed by HENDRIX of AuroraDesigns.")
 		
 	def online_tutorial(self):
-		import webbrowser
-		url = "http://thezt2roundtable.com/topic/11479528/1"
-		webbrowser.open(url,new=2)
+		webbrowser.open("http://thezt2roundtable.com/topic/11479528/1", new=2)
 		
 	def online_support(self):
-		import webbrowser
-		url = "http://thezt2roundtable.com/topic/11485920/1/"
-		webbrowser.open(url,new=2)
+		webbrowser.open("http://thezt2roundtable.com/topic/11485920/1/", new=2)
 
 	def update_ui(self, event):
 		"""Fill the project menu with the entities in the list, and update the current entity. Also load its properties and zoopedia"""
