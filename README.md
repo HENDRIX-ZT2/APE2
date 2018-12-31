@@ -4,7 +4,7 @@ Utility program to code new content for Zoo Tycoon 2, similar to the official An
 
 ### Installation
 You need to have installed:
-- python 3.6
+- python 3.6 (make sure you add it to your system path during installation)
 - requests
 - bs4 (beautifulsoup4)
 
