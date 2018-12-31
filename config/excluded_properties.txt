@@ -1,0 +1,3 @@
+s_Zoopedia
+s_Species
+s_DonateToken
