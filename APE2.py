@@ -25,7 +25,6 @@ except NameError:  # We are the main py2exe script, not a module
     import sys
     approot = os.path.dirname(os.path.abspath(sys.argv[0]))
 os.environ['REQUESTS_CA_BUNDLE'] = os.path.join(approot, "cacert.pem")
-print(os.environ['REQUESTS_CA_BUNDLE'] )
 
 def clean_directory(top, target=""):
 	try:
@@ -64,12 +63,18 @@ class Application:
 		self.languages_2_codes={}
 		for file in os.listdir(self.dir_translations):
 			if file.endswith(".txt"):
-				code, lang = file[:-4].split("=")
-				self.languages_2_codes[lang]=code
-				self.translations[code]={}
-				for line in self.read_encoded(os.path.join(self.dir_translations,file)).split("\r\n"):
-					k,v = line.split("=")
-					self.translations[code][k] = v
+				try:
+					code, lang = file[:-4].split("=")
+					self.languages_2_codes[lang]=code
+					self.translations[code]={}
+					for line in self.read_encoded(os.path.join(self.dir_translations,file)).split("\r\n"):
+						line = line.strip()
+						if line:
+							k,v = line.split("=")[0:2]
+							self.translations[code][k] = v
+				except:
+					messagebox.showinfo("Error","Could not load translation " + os.path.basename(file))
+					
 
 	def read_encoded(self, file, encoding="utf-8"):
 		"""Open a file and decode to UTF8"""
