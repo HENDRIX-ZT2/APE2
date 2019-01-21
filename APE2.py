@@ -76,12 +76,16 @@ class Application:
 					messagebox.showinfo("Error","Could not load translation " + os.path.basename(file))
 					
 
-	def read_encoded(self, file, encoding="utf-8"):
+	def read_encoded(self, file, encodings=("utf-8", 'iso-8859-1', "cp1252" ) ):
 		"""Open a file and decode to UTF8"""
 		f = open(file, 'rb')
 		data = f.read()
 		f.close()
-		return data.decode(encoding)
+		for encoding in encodings:
+			try:
+				return data.decode(encoding)
+			except UnicodeDecodeError:
+				messagebox.showinfo("Error","Illegal characters in encoding. Trying ANSI to UTF-8 conversion... Hit the original coder with a stick!")
 		
 	def write_utf8(self, file, data):
 		"""Save UTF8 to file"""
@@ -95,11 +99,7 @@ class Application:
 		self.print_s(err.msg)
 		
 		self.update_message("Debugging " + os.path.basename(file))
-		try:
-			data = self.read_encoded(file)
-		except UnicodeDecodeError:
-			messagebox.showinfo("Error","Illegal characters in encoding. Trying ANSI to UTF-8 conversion... Hit the original coder with a stick!")
-			data = self.read_encoded(file, encoding = 'iso-8859-1')
+		data = self.read_encoded(file)
 		
 		lines = data.split("\n")
 		for line in lines:
@@ -1184,6 +1184,7 @@ class Application:
 	def find_lang_file(self, langcode, codename):
 		langpath = os.path.join("lang",langcode)
 		if os.path.isdir(langpath):
+			print(langpath)
 			#first step - literal
 			filepath = os.path.join(langpath,codename+"_strings.xml")
 			if os.path.isfile(filepath): return filepath
@@ -1194,6 +1195,7 @@ class Application:
 			#third - brute force for shared zoopedias
 			for file in os.listdir(langpath):
 				filepath = os.path.join(langpath, file)
+				print(filepath)
 				data = self.read_encoded(filepath)
 				if codename in data:
 					return filepath
